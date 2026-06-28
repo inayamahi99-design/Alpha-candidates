@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpha Production House Interview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(0,255,170,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,170,.08) 1px, transparent 1px),
+        radial-gradient(circle at 50% -10%, rgba(0,255,180,.22), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(0,100,60,.22), transparent 35%),
+        #020806;
+      background-size: 72px 72px, 72px 72px, 100% 100%;
+      color: #7fffe5;
+      font-family: 'Rajdhani', sans-serif;
+    }
+    .main {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 24px;
+    }
+    .panel {
+      background: rgba(0, 10, 8, .88);
+      border: 1px solid rgba(30, 255, 180, .42);
+      box-shadow:
+        0 0 0 1px rgba(0,255,170,.08),
+        0 0 38px rgba(0,255,170,.13),
+        inset 0 0 30px rgba(0,255,170,.03);
+      padding: 32px;
+    }
+    .logo-title {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 8px;
+      font-size: 58px;
+      font-weight: 900;
+      text-align: center;
+      background: linear-gradient(180deg,#ffe9a8,#c58a23 45%,#7b4a0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .gold-sub {
+      text-align: center;
+      color: #f3bd55;
+      letter-spacing: 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      margin-top: -8px;
+    }
+    .neon-title {
+      font-family: 'Orbitron', sans-serif;
+      color: #6fffe8;
+      text-shadow: 0 0 18px rgba(46,255,215,.75), 0 0 38px rgba(46,255,215,.35);
+      letter-spacing: 3px;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #93c5fd;
+      letter-spacing: 5px;
+      font-family: 'Orbitron', sans-serif;
+      margin-top: 12px;
+    }
+    .label {
+      font-family: 'Orbitron', sans-serif;
+      color: #28eaff;
+      letter-spacing: 2px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
+    input, select, textarea {
+      width: 100%;
+      background: rgba(0,8,8,.72);
+      color: #e8fff9;
+      border: 1px solid rgba(31,211,211,.55);
+      padding: 16px;
+      font-size: 21px;
+      outline: none;
+      font-family: 'Rajdhani', sans-serif;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #5fffe8;
+      box-shadow: 0 0 0 3px rgba(95,255,232,.11), 0 0 22px rgba(95,255,232,.18);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+    .btn-neon {
+      width: 100%;
+      padding: 18px;
+      margin-top: 28px;
+      background: rgba(0,60,42,.55);
+      color: #5fffe8;
+      border: 1px solid rgba(95,255,232,.7);
+      box-shadow: inset 0 0 20px rgba(95,255,232,.08), 0 0 24px rgba(95,255,232,.16);
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .btn-neon:hover {
+      background: rgba(0,95,67,.7);
+      transform: translateY(-1px);
+    }
+    .btn-gold {
+      padding: 15px 22px;
+      color: #ffd778;
+      border: 1px solid rgba(255,215,120,.7);
+      background: rgba(80,50,0,.35);
+      box-shadow: 0 0 24px rgba(255,188,57,.16);
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .hidden { display: none; }
+    .scan {
+      position: relative;
+      overflow: hidden;
+    }
+    .scan:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -20%;
+      height: 15%;
+      background: linear-gradient(transparent, rgba(95,255,232,.12), transparent);
+      animation: scan 4s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes scan { to { top: 110%; } }
+    @media(max-width: 700px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .logo-title { font-size: 42px; letter-spacing: 4px; }
+      .gold-sub { letter-spacing: 6px; }
+      .neon-title { font-size: 24px; }
+    }
+    .step-indicator .panel { 
+      cursor: default; 
+      opacity: 0.6;
+      transition: 0.3s;
+    }
+    .step-indicator .panel.active { 
+      opacity: 1; 
+      border-color: #5fffe8;
+      box-shadow: 0 0 24px rgba(95,255,232,.2);
+    }
+    .step-indicator .panel.done { 
+      opacity: 0.9; 
+      border-color: #f3bd55;
+    }
+    .error-msg {
+      color: #ff7a7a;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .btn-neon:disabled, .btn-gold:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .flex-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .flex-btns .btn-neon, .flex-btns .btn-gold {
+      flex: 1 1 auto;
+      min-width: 140px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="main">
+
+  <header class="panel scan">
+    <div class="logo-title">ALPHA</div>
+    <div class="gold-sub">PRODUCTION HOUSE</div>
+    <h1 class="neon-title">ALPHA PRODUCTION HOUSE</h1>
+    <p class="subtitle">CANDIDATE INTERVIEW SCREENING</p>
+  </header>
+  <br>
+
+  <!-- LOGIN PAGE -->
+  <section id="loginPage" class="panel">
+    <h2 class="neon-title">▶ ALPHA TALENT ACQUISITION</h2>
+    <div class="form-grid">
+      <div>
+        <label class="label">Candidate Name *</label>
+        <input id="name" placeholder="Enter full name">
+      </div>
+      <div>
+        <label class="label">Email Address *</label>
+        <input id="email" type="email" placeholder="candidate@email.com">
+      </div>
+      <div>
+        <label class="label">Contact Number *</label>
+        <input id="phone" placeholder="+92...">
+      </div>
+      <div>
+        <label class="label">Position Applied *</label>
+        <select id="position">
+          <option value="">-- Select --</option>
+          <option>Telecaller</option>
+          <option>Closer</option>
+        </select>
+      </div>
+    </div>
+    <div id="loginError" class="error-msg hidden">Please fill all required fields.</div>
+    <button class="btn-neon" onclick="validateAndStart()">Start Secure Interview</button>
+  </section>
+
+  <!-- LOADING -->
+  <section id="loadingPage" class="panel hidden">
+    <h2 class="neon-title">INITIALIZING INTERVIEW...</h2>
+    <br>
+    <div style="width:100%;background:#00110c;border:1px solid #00ffc8;height:24px;">
+      <div id="loadingBar" style="width:0%;height:100%;background:#00ffd0;transition:.3s;"></div>
+    </div>
+    <br>
+    <h2 id="loadingText" style="text-align:center;color:#9efbe6;font-family:Orbitron;">Preparing...</h2>
+  </section>
+
+  <!-- INTERVIEW MAIN -->
+  <section id="interviewPage" class="hidden">
+    <!-- Step indicator -->
+    <div class="step-indicator" style="display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:35px;">
+      <div id="step1" class="panel active" style="text-align:center;"><h3>STEP 1</h3><p>Resume</p></div>
+      <div id="step2" class="panel" style="text-align:center;"><h3>STEP 2</h3><p>Camera</p></div>
+      <div id="step3" class="panel" style="text-align:center;"><h3>STEP 3</h3><p>Interview</p></div>
+      <div id="step4" class="panel" style="text-align:center;"><h3>STEP 4</h3><p>Submit</p></div>
+    </div>
+
+    <!-- RESUME PAGE -->
+    <section id="resumePage" class="panel">
+      <h2 class="neon-title">UPLOAD RESUME</h2>
+      <br>
+      <input type="file" id="resume" accept=".pdf,.doc,.docx">
+      <div id="resumeError" class="error-msg hidden">Please upload a resume (PDF, DOC, DOCX).</div>
+      <br><br>
+      <button class="btn-neon" onclick="validateResume()">Continue</button>
+    </section>
+
+    <!-- CAMERA PAGE -->
+    <section id="cameraPage" class="panel hidden">
+      <h2 class="neon-title">CAMERA VERIFICATION</h2>
+      <br>
+      <video id="video" autoplay playsinline style="width:100%;border:2px solid #00ffd0;"></video>
+      <canvas id="canvas" class="hidden"></canvas>
+      <img id="capturedImage" class="hidden" style="width:100%;border:2px solid #00ffd0;">
+      <div id="cameraError" class="error-msg hidden">Please capture a photo before continuing.</div>
+      <br>
+      <div class="flex-btns">
+        <button class="btn-gold" onclick="startCamera()">Start Camera</button>
+        <button class="btn-neon" onclick="capturePhoto()">Capture</button>
+        <button class="btn-neon" onclick="validateCamera()">Continue</button>
+      </div>
+    </section>
+
+    <!-- QUESTIONS PAGE -->
+    <section id="questionsPage" class="panel hidden">
+      <h2 class="neon-title">Interview Questions</h2>
+      <br>
+      <div style="width:100%;height:18px;background:#021b18;border:1px solid cyan;">
+        <div id="progressBar" style="height:100%;width:5%;background:#00ffd0;"></div>
+      </div>
+      <br>
+      <h2 id="questionNumber">1 / 20</h2>
+      <br>
+      <h2 id="questionText">Loading...</h2>
+      <br>
+      <textarea id="answerBox" placeholder="Type your answer here..."></textarea>
+      <div id="answerError" class="error-msg hidden">Please provide an answer before proceeding.</div>
+      <br>
+      <div class="flex-btns">
+        <button class="btn-gold" onclick="previousQuestion()">Previous</button>
+        <button class="btn-gold" onclick="startVoice()">Voice</button>
+        <button class="btn-neon" onclick="nextQuestion()">Next</button>
+      </div>
+    </section>
+
+    <!-- SUCCESS -->
+    <section id="successPage" class="panel hidden">
+      <h1 class="neon-title">APPLICATION SUBMITTED</h1>
+      <br>
+      <h2 style="text-align:center">Application ID</h2>
+      <h1 id="applicationID" style="text-align:center;font-size:42px;color:#FFD700;">APH-000000</h1>
+      <p style="text-align:center;font-size:22px;">Thank you. HR will review your interview. If shortlisted, we will contact you.</p>
+    </section>
+  </section>
+</div>
+
+<script>
+  // ---------- CONFIG ----------
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZwYwL_w-pPXAXX8U5N9fa-t5r072yQN3P1UFi3F6NNPFUtuXtqUmKStlYQZwB7gENsg/exec";
+
+  let stream = null;
+  let currentQuestion = 0;
+  let answers = [];
+  let photoCaptured = false;
+  let resumeValid = false;
+  let interviewCompleted = false;
+
+  const questions = [
+    "Tell us about yourself.",
+    "Why do you want this job?",
+    "Do you have call center experience?",
+    "Can you speak English confidently?",
+    "Are you comfortable talking to customers?",
+    "How will you handle an angry customer?",
+    "Can you work under pressure?",
+    "Are you comfortable with targets?",
+    "Can you work in night shift?",
+    "Are you comfortable using a computer?",
+    "What is your typing speed?",
+    "Can you follow company rules?",
+    "Can you work with a team?",
+    "How will you handle a customer complaint?",
+    "What will you do if you do not know the answer?",
+    "Are you punctual?",
+    "Why should we hire you?",
+    "What are your strengths?",
+    "What are your weaknesses?",
+    "Are you ready to join immediately?"
+  ];
+
+  // ---------- STEP INDICATOR ----------
+  function setActiveStep(step) {
+    const ids = ['step1','step2','step3','step4'];
+    ids.forEach((id, idx) => {
+      const el = document.getElementById(id);
+      el.classList.remove('active','done');
+      if (idx < step) el.classList.add('done');
+      else if (idx === step) el.classList.add('active');
+    });
+  }
+
+  // ---------- LOGIN VALIDATION ----------
+  function validateAndStart() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const position = document.getElementById('position').value;
+    const err = document.getElementById('loginError');
+
+    if (!name || !email || !phone || !position) {
+      err.classList.remove('hidden');
+      return;
+    }
+    err.classList.add('hidden');
+
+    // proceed to loading
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('loadingPage').classList.remove('hidden');
+
+    let progress = 0;
+    const text = ["Initializing...","Connecting...","Loading Interview...","Preparing Questions...","Almost Ready..."];
+    let i = 0;
+    const timer = setInterval(() => {
+      progress += 20;
+      document.getElementById('loadingBar').style.width = progress + '%';
+      document.getElementById('loadingText').innerHTML = text[i] || 'Ready';
+      i++;
+      if (progress >= 100) {
+        clearInterval(timer);
+        document.getElementById('loadingPage').classList.add('hidden');
+        document.getElementById('interviewPage').classList.remove('hidden');
+        setActiveStep(0);
+        // init answers array
+        answers = new Array(questions.length).fill('');
+        showQuestion();
+      }
+    }, 700);
+  }
+
+  // ---------- RESUME VALIDATION ----------
+  function validateResume() {
+    const fileInput = document.getElementById('resume');
+    const err = document.getElementById('resumeError');
+    if (fileInput.files.length === 0) {
+      err.classList.remove('hidden');
+      return;
+    }
+    const file = fileInput.files[0];
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (!['pdf','doc','docx'].includes(ext)) {
+      err.classList.remove('hidden');
+      return;
+    }
+    err.classList.add('hidden');
+    resumeValid = true;
+    setActiveStep(1);
+    document.getElementById('resumePage').classList.add('hidden');
+    document.getElementById('cameraPage').classList.remove('hidden');
+    // auto start camera
+    startCamera();
+  }
+
+  // ---------- CAMERA ----------
+  async function startCamera() {
+    try {
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+      }
+      stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      document.getElementById('video').srcObject = stream;
+      document.getElementById('video').classList.remove('hidden');
+      document.getElementById('capturedImage').classList.add('hidden');
+      photoCaptured = false;
+      document.getElementById('cameraError').classList.add('hidden');
+    } catch (e) {
+      alert('Camera permission denied. Please allow camera and try again.');
+    }
+  }
+
+  function capturePhoto() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const image = document.getElementById('capturedImage');
+    if (!stream) {
+      alert('Please start camera first.');
+      return;
+    }
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    image.src = canvas.toDataURL('image/jpeg');
+    image.classList.remove('hidden');
+    video.classList.add('hidden');
+    photoCaptured = true;
+    document.getElementById('cameraError').classList.add('hidden');
+    // stop stream
+    if (stream) {
+      stream.getTracks().forEach(t => t.stop());
+      stream = null;
+    }
+  }
+
+  function validateCamera() {
+    if (!photoCaptured) {
+      document.getElementById('cameraError').classList.remove('hidden');
+      return;
+    }
+    document.getElementById('cameraError').classList.add('hidden');
+    setActiveStep(2);
+    document.getElementById('cameraPage').classList.add('hidden');
+    document.getElementById('questionsPage').classList.remove('hidden');
+    showQuestion();
+  }
+
+  // ---------- QUESTIONS ----------
+  function showQuestion() {
+    document.getElementById('questionText').innerText = questions[currentQuestion];
+    document.getElementById('questionNumber').innerText = (currentQuestion + 1) + ' / ' + questions.length;
+    document.getElementById('progressBar').style.width = ((currentQuestion + 1) / questions.length * 100) + '%';
+    document.getElementById('answerBox').value = answers[currentQuestion] || '';
+    document.getElementById('answerError').classList.add('hidden');
+  }
+
+  function nextQuestion() {
+    const val = document.getElementById('answerBox').value.trim();
+    if (!val) {
+      document.getElementById('answerError').classList.remove('hidden');
+      return;
+    }
+    document.getElementById('answerError').classList.add('hidden');
+    answers[currentQuestion] = val;
+
+    if (currentQuestion < questions.length - 1) {
+      currentQuestion++;
+      showQuestion();
+    } else {
+      // all questions answered
+      setActiveStep(3);
+      submitToGoogleSheet();
+    }
+  }
+
+  function previousQuestion() {
+    const val = document.getElementById('answerBox').value.trim();
+    if (val) answers[currentQuestion] = val;
+    if (currentQuestion > 0) {
+      currentQuestion--;
+      showQuestion();
+    }
+  }
+
+  function startVoice() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Voice works best in Google Chrome.');
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = true;
+    recognition.onresult = function(event) {
+      let text = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        text += event.results[i][0].transcript;
+      }
+      document.getElementById('answerBox').value = text;
+    };
+    recognition.start();
+  }
+
+  // ---------- SUBMIT ----------
+  function generateApplicationID() {
+    const year = new Date().getFullYear();
+    const random = Math.floor(100000 + Math.random() * 900000);
+    return 'APH-' + year + '-' + random;
+  }
+
+  function submitToGoogleSheet() {
+    // ensure all answers are captured
+    const finalAnswer = document.getElementById('answerBox').value.trim();
+    if (finalAnswer) answers[currentQuestion] = finalAnswer;
+
+    const applicationID = generateApplicationID();
+    document.getElementById('applicationID').innerText = applicationID;
+
+    const resumeFile = document.getElementById('resume').files[0];
+
+    const data = {
+      applicationID: applicationID,
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      position: document.getElementById('position').value,
+      resumeName: resumeFile ? resumeFile.name : 'No resume',
+      cameraVerified: photoCaptured ? 'Yes' : 'No'
+    };
+
+    for (let i = 0; i < questions.length; i++) {
+      data['a' + (i+1)] = answers[i] || '';
+    }
+
+    // send to Google Sheet (no-cors)
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(() => {});
+
+    document.getElementById('questionsPage').classList.add('hidden');
+    document.getElementById('successPage').classList.remove('hidden');
+    setActiveStep(3);
+  }
+
+  // ensure that if user tries to skip, they are forced
+  window.onload = function() {
+    // prefill answers
+    answers = new Array(questions.length).fill('');
+  };
+</script>
+</body>
+</html>
